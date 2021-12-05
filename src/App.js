@@ -1,25 +1,51 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import "./App.css";
+import Header from "./Components/Header";
+import Car from "./Components/Car";
+import { initialCars } from "./cars";
+import { additionalCars } from "./cars";
+import AddCar from "./Components/AddCar";
 
-function App() {
+const App = () => {
+  const [cars, setCars] = useState(initialCars);
+  const [flag, setFlag] = useState(false);
+  const loadAdditionalCars = (e) => {
+    e.preventDefault();
+    setFlag(true);
+    setCars([...cars, ...additionalCars]);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Header text="Tata motors" />
+      <p className="App-intro">Some info about tata cars.</p>
+      <div className="cars">
+        {cars.map((item, key) => (
+          //   <div key={key}>
+          <Car item={item} />
+          //   </div>
+        ))}
+      </div>
+      <div className="add-cars">
+        {!flag ? (
+          <button
+            onClick={(e) => loadAdditionalCars(e)}
+            style={{ cursor: "pointer" }}
+          >
+            See more...
+          </button>
+        ) : (
+          <button
+            onClick={(e) => loadAdditionalCars(e)}
+            style={{ cursor: "pointer" }}
+            disabled
+          >
+            See more...
+          </button>
+        )}
+      </div>
+      <AddCar cars={cars} setCars={setCars} />
     </div>
   );
-}
-
+};
 export default App;
